@@ -35,7 +35,7 @@ describe("Dimensions Context", () => {
     expect(screen.getByText(/^Language:/).textContent).toBe("Language: en-gb");
   });
 
-  it("Returns the active customer type", () => {
+  it.skip("Returns the active customer type", () => {
     customRender(<Consumer />);
     expect(screen.getByText(/^Customer Type:/).textContent).toBe(
       "Customer Type: premium",

@@ -12,12 +12,9 @@ import {
 import createDefaultSeo from "../../next-seo.config";
 import { GoogleTagManagerScript } from "./googleTagManager";
 import { BackButton } from "./backButton";
+import { NavigationLink } from "./generic/navigation";
 import { useDimensions } from "../contexts";
-import {
-  addCloudinaryOnTheFlyImageTransformation,
-  hasProperty,
-  skylarkRequestWithLocalStorage,
-} from "../lib/utils";
+import { hasProperty, skylarkRequestWithLocalStorage } from "../lib/utils";
 import { AppBackgroundGradient } from "./generic/app-background-gradient";
 import { AppHeader } from "./generic/app-header";
 import { Button } from "./generic/button";
@@ -31,7 +28,6 @@ import { PURGE_CACHE } from "../graphql/queries/purgeCache";
 import { useUser } from "../hooks/useUserAccount";
 import { DimensionSettings } from "./generic/dimension-settings";
 import { SkylarkApiPermission } from "../types";
-import { NavigationLink } from "./generic/navigation";
 
 interface Props {
   skylarkApiUrl?: string;
@@ -51,9 +47,7 @@ const Logo = ({ config }: { config?: SkylarkTVConfig }) => {
         alt={configLogo.alt}
         className="block max-h-20"
         key={configLogo.src}
-        src={addCloudinaryOnTheFlyImageTransformation(configLogo.src, {
-          height: 100,
-        })}
+        src={configLogo.src}
       />
     );
   }
@@ -135,7 +129,7 @@ export const SkylarkTVLayout: React.FC<Props> = ({
       )}
       <div className="relative w-full">
         {isMobileSearchOpen && (
-          <div className="fixed inset-0 z-80 bg-gray-800 md:hidden">
+          <div className="fixed inset-0 z-80 bg-gray-800 lg:hidden">
             <Search onSearch={() => setMobileSearchOpen(false)} />
           </div>
         )}
@@ -176,7 +170,7 @@ export const SkylarkTVLayout: React.FC<Props> = ({
           <div className="flex h-full items-center justify-center text-3xl text-gray-100">
             <BackButton />
             <Link
-              className="flex h-full items-center ltr:md:ml-8 ltr:lg:ml-16 ltr:xl:ml-20 rtl:md:mr-8 rtl:lg:mr-16 rtl:xl:mr-20"
+              className="flex h-full items-center ltr:lg:ml-8 ltr:xl:ml-20 rtl:lg:mr-8 rtl:xl:mr-20"
               href="/"
             >
               {config?.logo || CLIENT_APP_CONFIG.header?.logo ? (
@@ -184,22 +178,18 @@ export const SkylarkTVLayout: React.FC<Props> = ({
                 <img
                   alt={config?.logo?.alt || CLIENT_APP_CONFIG.header?.logo.alt}
                   className="block h-full max-h-8 py-1 md:max-h-16 md:py-2 lg:py-3"
-                  src={addCloudinaryOnTheFlyImageTransformation(
-                    (config?.logo?.src ||
-                      CLIENT_APP_CONFIG.header?.logo.src) as string,
-                    { height: 100 },
-                  )}
+                  src={CLIENT_APP_CONFIG.header?.logo.src}
                 />
               ) : (
-                <MdStream className="h-9 w-9 md:h-10 md:w-10 lg:h-12 lg:w-12" />
+                <MdStream className="h-9 w-9 lg:h-10 lg:w-10 xl:h-12 xl:w-12" />
               )}
               {!CLIENT_APP_CONFIG.header?.hideAppName && (
-                <h2 className="mx-1 text-base md:mx-2 md:text-xl lg:text-2xl">
+                <h2 className="mx-1 text-base lg:mx-2 lg:text-2xl xl:text-xl">
                   {appTitle}
                 </h2>
               )}
             </Link>
-            <span className="absolute right-2 top-16 md:hidden">
+            <span className="absolute right-2 top-16 lg:hidden">
               {isMobileSearchOpen && (
                 <Button
                   icon={
@@ -216,11 +206,11 @@ export const SkylarkTVLayout: React.FC<Props> = ({
               )}
             </span>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <Search />
           </div>
         </AppHeader>
-        <div className="relative z-10 h-full w-full pt-mobile-header md:pt-0">
+        <div className="relative z-10 h-full w-full pt-mobile-header lg:pt-0">
           {children}
         </div>
         {includeDimensionSettings &&

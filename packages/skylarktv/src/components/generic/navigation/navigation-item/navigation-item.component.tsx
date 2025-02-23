@@ -26,17 +26,17 @@ export const NavigationItem = ({
   const textAndIcon =
     variant === "default" ? (
       <>
-        <span className="max-md:hidden">{link.text}</span>
-        <span className="md:hidden">{link.icon}</span>
+        <span className="max-lg:hidden">{link.text}</span>
+        <span className="lg:hidden">{link.icon}</span>
       </>
     ) : (
       <span>{variant === "text" ? link.text : link.icon}</span>
     );
 
   const className = clsx(
-    "text-xl transition-colors flex justify-center items-center hover:text-white md:text-sm h-full lg:text-base max-md:py-2",
-    variant === "icon" ? "px-2" : "max-md:px-8",
-    link.isMobileOnly && "md:hidden",
+    "text-xl transition-colors flex justify-center items-center hover:text-white lg:text-sm h-full lg:text-base max-lg:py-2",
+    variant === "icon" ? "px-2" : "max-lg:px-8",
+    link.isMobileOnly && "lg:hidden",
   );
 
   return (

@@ -22,6 +22,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@fontsource/figtree": "5.1.1",
     "@amplitude/segment-session-replay-wrapper": "0.4.0",
     "@fontsource/inter": "5.1.0",
     "@fontsource/outfit": "5.1.0",

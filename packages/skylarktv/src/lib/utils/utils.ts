@@ -99,8 +99,8 @@ export const skylarkRequestWithDimensions = <T>(
 ) => {
   const headers: Record<string, string> = {
     "x-sl-dimension-customer-types": dimensions[DimensionKey.CustomerType],
-    "x-sl-dimension-device-types": dimensions[DimensionKey.DeviceType],
-    "x-sl-dimension-regions": dimensions[DimensionKey.Region],
+    // "x-sl-dimension-device-types": dimensions[DimensionKey.DeviceType],
+    // "x-sl-dimension-regions": dimensions[DimensionKey.Region],
     "x-language": dimensions[DimensionKey.Language],
   };
 

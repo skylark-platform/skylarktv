@@ -2395,6 +2395,11 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.8.tgz#21a907684723bbbaa5f0974cf7730bd797eb8e62"
   integrity sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==
 
+"@fontsource/figtree@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@fontsource/figtree/-/figtree-5.1.1.tgz#715513b4d141da30c46371dc50c378264719960c"
+  integrity sha512-jVxgbCrtag/f6FYauu+DbQJR7TvM43IyX2iNcx8QmmEluzyPZ+FVRul5t0OV9k52fDi6nBLF/8709AAGYv7ZmA==
+
 "@fontsource/inter@5.1.0":
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.1.0.tgz#ab629b2c662457022d2d6a29854b8dc8ba538c47"

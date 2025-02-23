@@ -89,8 +89,8 @@ describe("utils", () => {
         {
           "x-language": "",
           "x-sl-dimension-customer-types": "",
-          "x-sl-dimension-device-types": "",
-          "x-sl-dimension-regions": "",
+          // "x-sl-dimension-device-types": "",
+          // "x-sl-dimension-regions": "",
         },
       );
     });
@@ -116,8 +116,8 @@ describe("utils", () => {
           "x-time-travel": "next week",
           "x-language": "",
           "x-sl-dimension-customer-types": "",
-          "x-sl-dimension-device-types": "",
-          "x-sl-dimension-regions": "",
+          // "x-sl-dimension-device-types": "",
+          // "x-sl-dimension-regions": "",
         },
       );
     });

@@ -46,6 +46,7 @@ const PersonPage: NextPage = () => {
     ?.map((credit) => [
       ...(credit?.movies?.objects || []),
       ...(credit?.episodes?.objects || []),
+      ...(credit?.articles?.objects || []),
     ])
     .flatMap((arr) => arr)
     .filter((obj, index, arr): obj is Movie | Episode =>

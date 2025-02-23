@@ -78,7 +78,7 @@ const ArticlesPage: NextPage = () => {
                     key={uid}
                   >
                     <Link className="block" href={href}>
-                      <div className="relative mb-4 flex h-56 w-full justify-start rounded-sm bg-gray-400 transition-all group-hover:scale-105">
+                      <div className="relative mb-4 flex h-96 w-full justify-start rounded-sm bg-gray-400 transition-all group-hover:scale-105">
                         {image && (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img

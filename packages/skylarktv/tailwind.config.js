@@ -64,8 +64,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        display: "Outfit",
-        body: "Outfit",
+        display: "Figtree",
+        body: "Figtree",
         "skylark-branding": "Inter",
       },
       spacing: {

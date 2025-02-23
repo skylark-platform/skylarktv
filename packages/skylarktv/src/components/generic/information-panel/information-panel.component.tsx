@@ -46,7 +46,7 @@ const getTranslationStringForAvailability = (
     case "year":
       return "available-for.years";
     default:
-      return "available-for.ever";
+      return "";
   }
 };
 

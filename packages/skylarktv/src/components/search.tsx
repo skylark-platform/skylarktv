@@ -193,19 +193,19 @@ export const Search = ({ onSearch }: { onSearch?: () => void }) => {
 
   return (
     <div
-      className="fixed inset-0 z-100 flex flex-col items-center justify-start pt-[16vh] md:relative md:block md:pt-0"
+      className="fixed inset-0 z-100 flex flex-col items-center justify-start pt-[16vh] lg:relative lg:block lg:pt-0"
       ref={ref}
       onFocus={onFocus}
     >
       <div
         className={clsx(
-          "flex items-center justify-center rounded-full border-0 border-gray-300 bg-skylarktv-purple-500/80 p-3 px-4 transition-colors focus-within:border-white focus-within:text-white md:bg-button-tertiary",
+          "flex items-center justify-center rounded-full border-0 border-gray-300 bg-skylarktv-purple-500/80 p-3 px-4 transition-colors focus-within:border-white focus-within:text-white lg:bg-button-tertiary",
           searchQuery ? "text-white" : "text-gray-300",
         )}
       >
         <input
           className={clsx(
-            "w-full border-none bg-transparent px-2 py-0 shadow-none outline-none ring-0 placeholder:text-gray-300 focus:border-none focus:shadow-none focus:outline-none focus:ring-0 focus:placeholder:text-white focus-visible:border-none focus-visible:outline-none md:w-44",
+            "w-full border-none bg-transparent px-2 py-0 shadow-none outline-none ring-0 placeholder:text-gray-100 focus:border-none focus:shadow-none focus:outline-none focus:ring-0 focus:placeholder:text-white focus-visible:border-none focus-visible:outline-none lg:w-44",
           )}
           placeholder={t("search")}
           type="text"
@@ -219,8 +219,8 @@ export const Search = ({ onSearch }: { onSearch?: () => void }) => {
         />
       </div>
       {searchResultsOpen && searchQuery && (
-        <div className="z-100 mt-2 md:absolute ltr:right-0 rtl:left-0">
-          <div className="max-h-[70vh] min-h-[2rem] w-[94vw] overflow-y-auto rounded bg-gray-800 px-4 py-6 md:max-h-[24rem] md:w-[34rem] md:px-8 md:py-8">
+        <div className="z-100 mt-2 lg:absolute ltr:right-0 rtl:left-0">
+          <div className="max-h-[70vh] min-h-[2rem] w-[94vw] overflow-y-auto rounded bg-gray-800 px-4 py-6 lg:max-h-[24rem] lg:w-[34rem] lg:px-8 lg:py-8">
             {(isLoading || data?.objects?.length === 0) && (
               <p className="text-lg font-medium text-gray-100">
                 {isLoading ? t("loading") : t("nothing-found")}

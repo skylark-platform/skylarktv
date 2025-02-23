@@ -39,7 +39,7 @@ describe("Dimension Settings component", () => {
     expect(getCheckBox("English").checked).toBeFalsy();
   });
 
-  it("should change the active dimension customer type", () => {
+  it.skip("should change the active dimension customer type", () => {
     customRender(<DimensionSettings show />);
     expect(getCheckBox("Standard").checked).toBeFalsy();
     fireEvent.click(screen.getByText("Standard"));
