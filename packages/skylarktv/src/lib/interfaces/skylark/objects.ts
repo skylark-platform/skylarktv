@@ -146,8 +146,7 @@ export type AllEntertainment =
   | Set;
 
 export enum DimensionKey {
-  CustomerType = "customer-type",
-  DeviceType = "device-type",
+  Property = "property",
   Region = "region",
   Language = "language",
   TimeTravel = "time-travel",

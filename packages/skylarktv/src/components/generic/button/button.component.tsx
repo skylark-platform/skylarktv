@@ -45,8 +45,8 @@ export const Button: React.FC<ButtonProps> = ({
       ? outlineClassName
       : "text-white disabled:text-gray-300"
   }
-flex justify-center items-center h-full
-hover:bg-skylarktv-accent disabled:bg-gray-100 transition-colors
+flex justify-center items-center h-full rounded-full
+disabled:bg-gray-100 transition-colors
 font-body cursor-pointer
 `;
 

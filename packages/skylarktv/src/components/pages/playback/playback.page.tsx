@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import useTranslation from "next-translate/useTranslation";
 import {
   MdBook,
@@ -19,9 +19,21 @@ import { Dayjs } from "dayjs";
 import { NextPage } from "next";
 import { formatReleaseDate, getTimeFromNow } from "../../../lib/utils";
 import { ListPersonOtherCreditsRail } from "../../rails";
+import { useObject } from "../../../hooks/useObject";
+import { GET_ASSET } from "../../../graphql/queries";
+import {
+  ChapterListing,
+  Maybe,
+  SkylarkAsset,
+  TimecodeEventListing,
+  TimecodeEventType,
+  TimecodeEventWithType,
+} from "../../../types";
+import { PlayerTimecodeEvent } from "../../playerTimecodeEvent";
+import { PlayerPauseOverlay } from "../../playerPauseOverlay";
 import { InformationPanel } from "../../generic/information-panel";
 import { MetadataPanel } from "../../generic/metadata-panel";
-import { Player } from "../../generic/player";
+import { Player, PlayerChapter, PlayerCuePoint } from "../../generic/player";
 import { SkeletonPage } from "../../generic/skeleton";
 import { Link } from "../../generic/link";
 import { useMuxPlaybackTokens } from "../../../hooks/useMuxPlaybackToken";
@@ -156,6 +168,50 @@ const convertAudienceRatingToStars = (rating?: string | number) => {
   );
 };
 
+const convertTimecodeEventsToPlayerCuePoints = (
+  timecodeEventListing: Maybe<TimecodeEventListing> | undefined,
+) =>
+  timecodeEventListing?.objects
+    ?.map(
+      (evt) =>
+        evt &&
+        typeof evt.timecode === "number" && {
+          startTime: evt.timecode,
+          payload: evt,
+        },
+    )
+    .filter((evt): evt is PlayerCuePoint<TimecodeEventWithType> => !!evt) ||
+  undefined;
+
+const convertChaptersToPlayerChapters = (
+  chapterListing: Maybe<ChapterListing> | undefined,
+) =>
+  chapterListing?.objects
+    ?.map((chapter): PlayerChapter<TimecodeEventWithType> | null =>
+      chapter && typeof chapter.start_time === "number"
+        ? {
+            uid: chapter.uid,
+            title: chapter.title ? chapter.title : undefined,
+            startTime: chapter.start_time,
+            cuePoints: convertTimecodeEventsToPlayerCuePoints(
+              chapter.timecode_events,
+            ),
+          }
+        : null,
+    )
+    .filter(
+      (chapter): chapter is PlayerChapter<TimecodeEventWithType> => !!chapter,
+    ) || undefined;
+
+const isAdvert = (type?: TimecodeEventType) =>
+  type &&
+  [TimecodeEventType.Advertcontextual, TimecodeEventType.Advertlink].includes(
+    type,
+  );
+
+const isWhisk = (type?: TimecodeEventType) =>
+  type && type === TimecodeEventType.Whisk;
+
 export const PlaybackPage: NextPage<PlaybackPageProps> = ({
   uid,
   loading,
@@ -177,9 +233,19 @@ export const PlaybackPage: NextPage<PlaybackPageProps> = ({
 }) => {
   const { t, lang } = useTranslation("common");
 
+  const { data: asset } = useObject<SkylarkAsset>(GET_ASSET, player.assetId);
+
   const { playbackTokens } = useMuxPlaybackTokens(
     player.provider,
     player.playbackId,
+  );
+
+  const { cuePoints, chapters } = useMemo(
+    () => ({
+      cuePoints: convertTimecodeEventsToPlayerCuePoints(asset?.timecode_events),
+      chapters: convertChaptersToPlayerChapters(asset?.chapters),
+    }),
+    [asset],
   );
 
   const allCredits = credits
@@ -224,54 +290,129 @@ export const PlaybackPage: NextPage<PlaybackPageProps> = ({
     },
   ];
 
+  const [activeChapter, setActiveChapter] =
+    useState<PlayerChapter<TimecodeEventWithType> | null>(null);
+  // const [activeCuePoint, setActiveCuePoint] =
+  //   useState<PlayerCuePoint<TimecodeEventWithType> | null>(null);
+  const [advert, setAdvert] =
+    useState<PlayerCuePoint<TimecodeEventWithType> | null>(null);
+  const [whisk, setWhisk] =
+    useState<PlayerCuePoint<TimecodeEventWithType> | null>(null);
+  const [pauseTime, setPauseTime] = useState<number | null>(null);
+
+  const handleChapterChange = (
+    c: PlayerChapter<TimecodeEventWithType> | null,
+  ) => {
+    console.log("Active Chapter Changed:", c);
+    setActiveChapter(c);
+
+    const firstAdvert = c?.cuePoints?.find(({ payload }) =>
+      isAdvert(payload.type),
+    );
+
+    const firstWhisk = c?.cuePoints?.find(({ payload }) =>
+      isWhisk(payload.type),
+    );
+
+    if (firstAdvert) setAdvert(firstAdvert);
+
+    setWhisk(firstWhisk || null);
+  };
+
+  const handleCuePointChange = (
+    p: PlayerCuePoint<TimecodeEventWithType> | null,
+  ) => {
+    console.log("Active Cue Point Changed:", p);
+    // setActiveCuePoint(p);
+    if (p?.payload.type && isAdvert(p.payload.type)) {
+      setAdvert(p);
+    }
+
+    if (isWhisk(p?.payload.type)) {
+      setWhisk(p);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-start bg-gray-900 pb-20 font-body md:pt-64">
+    <div className="flex min-h-screen flex-col items-center justify-start bg-gray-900 pb-20 font-body md:pt-32">
       <SkeletonPage show={!!loading}>
-        <div className="flex h-full w-full justify-center pb-10 md:pb-16">
+        <div className="flex h-full w-full justify-center overflow-x-hidden">
           <Player
             autoPlay={player.autoPlay}
+            chapters={chapters}
+            cuePoints={cuePoints}
+            pauseOverlay={
+              pauseTime && (
+                <PlayerPauseOverlay
+                  chapter={activeChapter || chapters?.[0] || null}
+                  timestamp={pauseTime}
+                />
+              )
+            }
             playbackId={player.playbackId}
-            playbackPolicy={player?.policy || undefined}
+            playbackPolicy={asset?.policy || undefined}
             playbackTokens={playbackTokens}
             poster={player.poster}
             provider={player.provider}
             src={player.src}
             videoId={player.assetId}
             videoTitle={title}
+            onChapterChange={handleChapterChange}
+            onCuePointChange={handleCuePointChange}
+            onPlayToggle={({ type, currentTime }) =>
+              setPauseTime(type === "pause" ? currentTime : null)
+            }
           />
         </div>
-        <div className="flex w-full flex-col px-gutter sm:px-sm-gutter md:flex-row md:py-2 lg:px-lg-gutter xl:px-xl-gutter">
-          <div className="h-full w-full pb-4 md:w-7/12">
-            <InformationPanel
-              actors={credits?.Actor?.formattedCredits}
-              availableUntil={
-                availabilityEndDate
-                  ? getTimeFromNow(availabilityEndDate)
-                  : undefined
-              }
-              brand={brand}
-              description={synopsis}
-              duration={player.duration}
-              genres={genres}
-              rating={rating}
-              season={season}
-              themes={themes}
-              title={number ? `${number}. ${title}` : title}
-            />
-          </div>
-          <span className="flex border-gray-800 bg-gray-900 md:mx-3 md:border-r" />
-          <div className="h-full w-full pt-4 md:w-5/12 ltr:pl-1 ltr:sm:pl-5 rtl:pr-1 rtl:sm:pr-5">
-            <div className="flex justify-center">
-              <span className="mb-4 w-4/5 border-b border-gray-800 md:hidden" />
+        <div className="mb-8 flex w-full flex-col items-center border-b border-gray-800 bg-gray-900 md:mb-16 md:h-72">
+          <div className="my-8 grid grid-cols-1 justify-between gap-y-4 rounded sm:w-11/12 md:h-72 md:grid-cols-3 md:gap-y-0 lg:w-3/4 2xl:w-2/3">
+            <div className="col-span-1 md:col-span-2">
+              <PlayerTimecodeEvent
+                payload={
+                  advert?.payload ||
+                  cuePoints?.find(({ payload }) => isAdvert(payload.type))
+                    ?.payload
+                }
+              />
             </div>
-            <MetadataPanel
-              content={metadataPanelContent.filter(({ body }) =>
-                Array.isArray(body)
-                  ? body.length > 0
-                  : body &&
-                    (React.isValidElement(body) || typeof body === "string"),
-              )}
-            />
+            <div className="col-span-1">
+              <PlayerTimecodeEvent payload={whisk?.payload} />
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full flex-col px-gutter sm:px-sm-gutter lg:px-lg-gutter xl:px-xl-gutter">
+          <div className="flex w-full flex-col md:flex-row md:py-2">
+            <div className="h-full w-full pb-4 md:w-7/12">
+              <InformationPanel
+                actors={credits?.Actor?.formattedCredits}
+                availableUntil={
+                  availabilityEndDate
+                    ? getTimeFromNow(availabilityEndDate)
+                    : undefined
+                }
+                brand={brand}
+                description={synopsis}
+                duration={player.duration}
+                genres={genres}
+                rating={rating}
+                season={season}
+                themes={themes}
+                title={number ? `${number}. ${title}` : title}
+              />
+            </div>
+            <span className="flex border-gray-800 bg-gray-900 md:mx-3 md:border-r" />
+            <div className="h-full w-full pt-4 md:w-5/12 ltr:pl-1 ltr:sm:pl-5 rtl:pr-1 rtl:sm:pr-5">
+              <div className="flex justify-center">
+                <span className="mb-4 w-4/5 border-b border-gray-800 md:hidden" />
+              </div>
+              <MetadataPanel
+                content={metadataPanelContent.filter(({ body }) =>
+                  Array.isArray(body)
+                    ? body.length > 0
+                    : React.isValidElement(body) || typeof body === "string",
+                )}
+              />
+            </div>
           </div>
         </div>
         {allCredits && (

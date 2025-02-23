@@ -1,8 +1,7 @@
 import { FieldSet, Record } from "airtable";
 
 export interface DimensionAirtables {
-  customerTypes: Record<FieldSet>[];
-  deviceTypes: Record<FieldSet>[];
+  properties: Record<FieldSet>[];
   regions: Record<FieldSet>[];
 }
 
@@ -47,8 +46,7 @@ export interface AvailabilityTableFields extends FieldSet {
   type: string;
   starts?: string;
   ends?: string;
-  devices?: string[];
-  customers?: string[];
+  properties?: string[];
   regions?: string[];
   segments?: string[];
 }

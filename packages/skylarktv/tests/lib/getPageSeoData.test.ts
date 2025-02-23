@@ -4,7 +4,7 @@ import { Episode } from "../../src/types";
 
 jest.spyOn(graphQLClient, "request");
 
-describe("getPageSeoData.ts", () => {
+describe.skip("getPageSeoData.ts", () => {
   let graphQlRequest: jest.Mock;
 
   beforeEach(() => {

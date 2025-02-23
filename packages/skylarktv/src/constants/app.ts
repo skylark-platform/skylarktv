@@ -1,4 +1,4 @@
-import { DeviceTypes, DimensionKey } from "../lib/interfaces";
+import { DimensionKey } from "../lib/interfaces";
 
 export const ALL_DIMENSION_QUERY_KEYS: DimensionKey[] =
   Object.values(DimensionKey);
@@ -19,7 +19,7 @@ const defaultAppConfig: {
   favicon?: string;
   showBySkylark: boolean;
   dimensions: Record<
-    DimensionKey.Region | DimensionKey.CustomerType | DimensionKey.DeviceType,
+    DimensionKey.Region | DimensionKey.Property,
     { values: { text: string; value: string }[] }
   >;
   withIntercom: boolean;
@@ -52,27 +52,13 @@ const defaultAppConfig: {
   withSegment: true,
   hideDimensionsSettings: false,
   dimensions: {
-    [DimensionKey.CustomerType]: {
-      values: [
-        { text: "Premium", value: "premium" },
-        { text: "Standard", value: "standard" },
-        { text: "Kids", value: "kids" },
-      ],
-    },
-    [DimensionKey.DeviceType]: {
-      values: [
-        { text: "Desktop", value: DeviceTypes.PC },
-        { text: "Mobile", value: DeviceTypes.Smartphone },
-      ],
+    [DimensionKey.Property]: {
+      values: [{ text: "Fremantle", value: "fremantle" }],
     },
     [DimensionKey.Region]: {
       values: [
         { text: "Europe", value: "europe" },
-        { text: "North America", value: "north-america" },
-        {
-          text: "Middle East",
-          value: "mena",
-        },
+        { text: "Canada", value: "canada" },
       ],
     },
   },
@@ -81,4 +67,25 @@ const defaultAppConfig: {
 
 export const CLIENT_APP_CONFIG: typeof defaultAppConfig = {
   ...defaultAppConfig,
+  name: "Fremantle",
+  description: "",
+  colours: {
+    primary: "rgb(18, 16, 37)",
+    accent: "#FFFFFF",
+    header: "rgb(27 26 32 / 0.7)",
+  },
+  showBySkylark: true,
+  hideDimensionsSettings: false,
+  withIntercom: false,
+  dimensions: {
+    [DimensionKey.Property]: {
+      values: [{ text: "Fremantle", value: "fremantle" }],
+    },
+    [DimensionKey.Region]: {
+      values: [
+        { text: "Europe", value: "europe" },
+        { text: "Canada", value: "canada" },
+      ],
+    },
+  },
 };

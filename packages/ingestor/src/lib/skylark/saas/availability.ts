@@ -33,12 +33,8 @@ export const showcaseDimensionsConfig: {
   title: string;
 }[] = [
   {
-    title: "Customer Type",
-    slug: "customer-types",
-  },
-  {
-    title: "Device Type",
-    slug: "device-types",
+    title: "Property",
+    slug: "properties",
   },
   {
     title: "Region",
@@ -276,12 +272,8 @@ const createAvailabilityDimensionsInput = (
 }[] =>
   [
     {
-      dimension_slug: "customer-types",
-      value_slugs: getValueSlugs(dimensions.customerTypes, fields.customers),
-    },
-    {
-      dimension_slug: "device-types",
-      value_slugs: getValueSlugs(dimensions.deviceTypes, fields.devices),
+      dimension_slug: "properties",
+      value_slugs: getValueSlugs(dimensions.properties, fields.properties),
     },
     {
       dimension_slug: "regions",
@@ -296,15 +288,14 @@ export const createOrUpdateScheduleDimensionValues = async (
     type: DimensionTypes;
     data: AirtableRecord<FieldSet>[];
   }[] = [
-    { type: "customer-types", data: airtable.customerTypes },
-    { type: "device-types", data: airtable.deviceTypes },
+    { type: "properties", data: airtable.properties },
     { type: "regions", data: airtable.regions },
   ];
 
   const dimensions: GraphQLDimension[] = await getExistingDimensions();
   const validProperties = await getValidPropertiesForObject("DimensionValue");
 
-  const [customerTypes, deviceTypes, regions] = await Promise.all(
+  const [properties, regions] = await Promise.all(
     dimensionValues.map(({ data, type }) => {
       const formattedValuesToCreate = data.map(({ id, fields }) => ({
         ...fields,
@@ -319,8 +310,7 @@ export const createOrUpdateScheduleDimensionValues = async (
     }),
   );
   return {
-    customerTypes,
-    deviceTypes,
+    properties,
     regions,
   };
 };

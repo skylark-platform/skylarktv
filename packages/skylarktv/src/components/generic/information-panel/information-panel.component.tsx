@@ -31,6 +31,7 @@ interface InformationPanelProps {
   }[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
 const getTranslationStringForAvailability = (
   unit: "day" | "month" | "year" | "never",
   number: number,

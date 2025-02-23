@@ -1,4 +1,13 @@
-import { Brand, Episode, LiveStream, Movie, Season, SkylarkSet } from "./gql";
+import {
+  Brand,
+  Episode,
+  LiveStream,
+  Movie,
+  Season,
+  SkylarkSet,
+  TimecodeEvent,
+  TimecodeEventType,
+} from "./gql";
 
 export type Entertainment =
   | Episode
@@ -62,3 +71,5 @@ export enum SkylarkTVAdditionalFields {
   AudienceRating = "audience_rating",
   Budget = "budget",
 }
+
+export type TimecodeEventWithType = TimecodeEvent & { type: TimecodeEventType };

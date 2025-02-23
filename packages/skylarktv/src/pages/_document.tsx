@@ -23,6 +23,11 @@ export default function Document() {
           type="image/png"
         />
         <link href="/site.webmanifest" rel="manifest" />
+        <script
+          async
+          src="https://cdn.whisk.com/sdk/shopping-list.js"
+          type="text/javascript"
+        ></script>
       </Head>
       <body className="overflow-x-hidden bg-gray-900 font-body">
         <Main />

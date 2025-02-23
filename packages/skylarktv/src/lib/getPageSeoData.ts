@@ -100,10 +100,9 @@ export const getSeoDataForObject = async (
           ...createGraphQLQueryDimensions({
             language,
             // TODO can we work out these before the client loads the page?
-            [DimensionKey.CustomerType]:
-              CLIENT_APP_CONFIG.dimensions[DimensionKey.CustomerType].values[0]
+            [DimensionKey.Property]:
+              CLIENT_APP_CONFIG.dimensions[DimensionKey.Property].values[0]
                 .value,
-            [DimensionKey.DeviceType]: "pc",
             [DimensionKey.TimeTravel]: "",
             [DimensionKey.Region]:
               CLIENT_APP_CONFIG.dimensions[DimensionKey.Region].values[0].value,

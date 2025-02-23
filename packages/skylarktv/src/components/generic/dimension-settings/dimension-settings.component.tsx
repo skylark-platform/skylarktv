@@ -47,7 +47,7 @@ export const DimensionSettings: React.FC<DimensionSettingsProps> = ({
   onCachePurge,
 }) => {
   const [show, setShow] = useState(propShow);
-  const { dimensions, setCustomerType, setTimeTravel, setLanguage, setRegion } =
+  const { dimensions, setProperty, setTimeTravel, setLanguage, setRegion } =
     useDimensions();
 
   const nextWeek = dayjs().add(7, "days");
@@ -151,12 +151,11 @@ export const DimensionSettings: React.FC<DimensionSettingsProps> = ({
               <div className="grid grid-cols-1 gap-8 pt-5 md:grid-cols-2 md:pt-8 lg:grid-cols-4">
                 <DimensionContent label="Customer Type">
                   <DimensionRadioButton
-                    active={dimensions[DimensionKey.CustomerType]}
+                    active={dimensions[DimensionKey.Property]}
                     options={
-                      CLIENT_APP_CONFIG.dimensions[DimensionKey.CustomerType]
-                        .values
+                      CLIENT_APP_CONFIG.dimensions[DimensionKey.Property].values
                     }
-                    onChange={(value: string) => setCustomerType(value)}
+                    onChange={(value: string) => setProperty(value)}
                   />
                 </DimensionContent>
                 <DimensionContent label="Region">

@@ -27,6 +27,24 @@ export const CallToActionListingFragment = gql`
   }
 `;
 
+export const TimecodeEventListingFragment = gql`
+  fragment timecodeEventListingFragment on TimecodeEventListing {
+    objects {
+      uid
+      type
+      slug
+      title
+      copy
+      link_text
+      link_href
+      timecode
+      images {
+        ...imageListingFragment
+      }
+    }
+  }
+`;
+
 export const ObjectLanguageFragment = gql`
   fragment objectLanguageFragment on Metadata {
     uid

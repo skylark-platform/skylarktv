@@ -27,7 +27,7 @@ export type TitleTypes = "title" | "title_short";
 
 export type SynopsisTypes = "synopsis" | "synopsis_short";
 
-export type DimensionTypes = "customer-types" | "device-types" | "regions";
+export type DimensionTypes = "properties" | "regions";
 
 export type GraphQLMediaObjectTypes =
   | "Brand"

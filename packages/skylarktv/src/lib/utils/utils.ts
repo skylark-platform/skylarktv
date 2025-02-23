@@ -98,8 +98,7 @@ export const skylarkRequestWithDimensions = <T>(
   optVariables?: Record<string, unknown>,
 ) => {
   const headers: Record<string, string> = {
-    "x-sl-dimension-customer-types": dimensions[DimensionKey.CustomerType],
-    "x-sl-dimension-device-types": dimensions[DimensionKey.DeviceType],
+    "x-sl-dimension-properties": dimensions[DimensionKey.Property],
     "x-sl-dimension-regions": dimensions[DimensionKey.Region],
     "x-language": dimensions[DimensionKey.Language],
   };
@@ -354,12 +353,8 @@ export const createGraphQLQueryDimensions = (
 ) => {
   const dimensions: { dimension: DimensionTypes; value: string }[] = [
     {
-      dimension: "device-types",
-      value: activeDimensions[DimensionKey.DeviceType],
-    },
-    {
-      dimension: "customer-types",
-      value: activeDimensions[DimensionKey.CustomerType],
+      dimension: "properties",
+      value: activeDimensions[DimensionKey.Property],
     },
     { dimension: "regions", value: activeDimensions[DimensionKey.Region] },
   ];

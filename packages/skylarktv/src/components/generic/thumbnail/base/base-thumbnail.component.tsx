@@ -38,11 +38,12 @@ export const BaseThumbnail: React.FC<BaseThumbnailProps> = ({
   large,
   statusTag,
 }) => {
-  const backgroundImage = useMemo(
-    () =>
-      addCloudinaryOnTheFlyImageTransformation(uncachedImage, { width: 400 }),
-    [uncachedImage],
-  );
+  const backgroundImage = useMemo(() => {
+    const url = addCloudinaryOnTheFlyImageTransformation(uncachedImage, {
+      width: 400,
+    });
+    return url;
+  }, [uncachedImage]);
 
   const imageLoaded = useImageLoaded(backgroundImage);
 

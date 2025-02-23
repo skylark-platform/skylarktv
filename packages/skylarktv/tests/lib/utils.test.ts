@@ -1,8 +1,4 @@
-import {
-  Dimensions,
-  DimensionKey,
-  DeviceTypes,
-} from "../../src/lib/interfaces";
+import { Dimensions, DimensionKey } from "../../src/lib/interfaces";
 import {
   Credit,
   Entertainment,
@@ -146,8 +142,7 @@ describe("utils.ts", () => {
     it("translates the active dimensions into the expected GraphQL format", () => {
       const dimensions: Dimensions = {
         [DimensionKey.Language]: "en-GB",
-        [DimensionKey.DeviceType]: DeviceTypes.Smartphone,
-        [DimensionKey.CustomerType]: "kids",
+        [DimensionKey.Property]: "fremantle",
         [DimensionKey.Region]: "europe",
         [DimensionKey.TimeTravel]: "",
       };
@@ -156,8 +151,7 @@ describe("utils.ts", () => {
 
       expect(got).toEqual({
         dimensions: [
-          { dimension: "device-types", value: "smartphone" },
-          { dimension: "customer-types", value: "kids" },
+          { dimension: "properties", value: "fremantle" },
           { dimension: "regions", value: "europe" },
         ],
         language: dimensions.language,
