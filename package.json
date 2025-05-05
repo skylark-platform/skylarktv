@@ -22,8 +22,8 @@
     "tsc:all": "yarn tsc:skylarktv && yarn tsc:ingestor"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "6.21.0",
-    "@typescript-eslint/parser": "6.21.0",
+    "@typescript-eslint/eslint-plugin": "8.32.0",
+    "@typescript-eslint/parser": "8.32.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "18.0.0",
